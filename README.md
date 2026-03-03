@@ -12,7 +12,7 @@ One-click resonance calibration macros for Klipper. Runs the test and saves a PN
 SSH into your printer and run:
 
 ```bash
-cd ~ && git clone https://github.com/Kanrog/klipper-resonance-calibration.git && bash ~/klipper-resonance-calibration/install.sh
+cd ~ && git clone https://github.com/YOURUSERNAME/klipper-resonance-calibration.git && bash ~/klipper-resonance-calibration/install.sh
 ```
 
 Then restart Klipper:
@@ -36,3 +36,13 @@ Graphs are saved to `printer_data/config/resonance_graphs/` and visible in the M
 ```bash
 cd ~/klipper-resonance-calibration && git pull && bash install.sh
 ```
+
+## Uninstall
+
+```bash
+bash ~/klipper-resonance-calibration/uninstall.sh
+```
+
+## Note
+
+The installer hardcodes your home directory path into the config files. If you change your username or migrate to a new board, just re-run `install.sh` to regenerate the paths correctly.
