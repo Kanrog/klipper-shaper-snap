@@ -5,7 +5,7 @@
 AXIS="${1:-x}"
 AXIS_UPPER=$(echo "$AXIS" | tr '[:lower:]' '[:upper:]')
 
-OUTPUT_DIR="__CONFIG_DIR__/resonance_graphs"
+OUTPUT_DIR="__OUTPUT_DIR__"
 KLIPPER_SCRIPTS="__KLIPPER_SCRIPTS__"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 OUTPUT_FILE="${OUTPUT_DIR}/resonance_${AXIS_UPPER}_${TIMESTAMP}.png"

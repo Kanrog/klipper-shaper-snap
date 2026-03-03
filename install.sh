@@ -1,6 +1,6 @@
 #!/bin/bash
-# Klipper Resonance Calibration - Installer
-# https://github.com/YOURUSERNAME/klipper-resonance-calibration
+# Klipper Shaper Snap - Installer
+# https://github.com/Kanrog/klipper-shaper-snap
 
 set -e
 
@@ -12,7 +12,7 @@ NC='\033[0m'
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo -e "${GREEN}================================================${NC}"
-echo -e "${GREEN}  Klipper Resonance Calibration Installer${NC}"
+echo -e "${GREEN}  Klipper Shaper Snap - Installer${NC}"
 echo -e "${GREEN}================================================${NC}"
 echo ""
 
@@ -57,27 +57,26 @@ fi
 echo -e "${GREEN}✓ Klipper scripts: $KLIPPER_SCRIPTS${NC}"
 
 # --- Check for gcode_shell_command ---
-SHELL_CMD_PATH="$HOME/klipper/klippy/extras/gcode_shell_command.py"
-if [ ! -f "$SHELL_CMD_PATH" ]; then
-    # Try other common paths
-    for candidate in "/home/pi/klipper/klippy/extras/gcode_shell_command.py" \
-                     "/home/mks/klipper/klippy/extras/gcode_shell_command.py" \
-                     "/home/biqu/klipper/klippy/extras/gcode_shell_command.py"; do
-        if [ -f "$candidate" ]; then
-            SHELL_CMD_PATH="$candidate"
-            break
-        fi
-    done
-fi
+SHELL_CMD_PATH=""
+for candidate in "$HOME/klipper/klippy/extras/gcode_shell_command.py" \
+                 "/home/pi/klipper/klippy/extras/gcode_shell_command.py" \
+                 "/home/mks/klipper/klippy/extras/gcode_shell_command.py" \
+                 "/home/biqu/klipper/klippy/extras/gcode_shell_command.py" \
+                 "/home/orangepi/klipper/klippy/extras/gcode_shell_command.py"; do
+    if [ -f "$candidate" ]; then
+        SHELL_CMD_PATH="$candidate"
+        break
+    fi
+done
 
-if [ ! -f "$SHELL_CMD_PATH" ]; then
+if [ -z "$SHELL_CMD_PATH" ]; then
     echo ""
     echo -e "${YELLOW}WARNING: gcode_shell_command.py not found.${NC}"
     echo "This plugin is required. Attempting to download from Kiauh..."
-    
+
     KIAUH_URL="https://raw.githubusercontent.com/dw-0/kiauh/master/resources/gcode_shell_command.py"
     DEST_PATH="$HOME/klipper/klippy/extras/gcode_shell_command.py"
-    
+
     if wget -q "$KIAUH_URL" -O "$DEST_PATH"; then
         echo -e "${GREEN}✓ gcode_shell_command.py installed${NC}"
     else
@@ -101,19 +100,18 @@ mkdir -p "$OUTPUT_DIR"
 
 # --- Install config files ---
 echo "Installing config files..."
-cp "$REPO_DIR/config/resonance_calibration_macros.cfg" "$CONFIG_DIR/resonance_calibration_macros.cfg"
+cp "$REPO_DIR/resonance_calibration_macros.cfg" "$CONFIG_DIR/resonance_calibration_macros.cfg"
 
 sed \
     -e "s|__SCRIPTS_DIR__|$SCRIPTS_DIR|g" \
-    "$REPO_DIR/config/shell_commands.cfg" > "$CONFIG_DIR/shell_commands.cfg"
+    "$REPO_DIR/shell_commands.cfg" > "$CONFIG_DIR/shell_commands.cfg"
 
-# --- Install shell script with real paths ---
+# --- Install shell script with real paths substituted ---
 echo "Installing shell script..."
 sed \
     -e "s|__OUTPUT_DIR__|$OUTPUT_DIR|g" \
-    -e "s|__CONFIG_DIR__|$CONFIG_DIR|g" \
     -e "s|__KLIPPER_SCRIPTS__|$KLIPPER_SCRIPTS|g" \
-    "$REPO_DIR/scripts/generate_resonance_graph.sh" > "$SCRIPTS_DIR/generate_resonance_graph.sh"
+    "$REPO_DIR/generate_resonance_graph.sh" > "$SCRIPTS_DIR/generate_resonance_graph.sh"
 
 chmod +x "$SCRIPTS_DIR/generate_resonance_graph.sh"
 echo -e "${GREEN}✓ Files installed${NC}"
@@ -122,18 +120,19 @@ echo -e "${GREEN}✓ Files installed${NC}"
 PRINTER_CFG="$CONFIG_DIR/printer.cfg"
 
 if [ ! -f "$PRINTER_CFG" ]; then
+    echo ""
     echo -e "${YELLOW}WARNING: printer.cfg not found at $PRINTER_CFG${NC}"
     echo "Please add these lines to your printer.cfg manually:"
     echo "  [include resonance_calibration_macros.cfg]"
     echo "  [include shell_commands.cfg]"
 else
     echo "Updating printer.cfg..."
+
     add_include() {
         local line="[include $1]"
         if grep -qF "$line" "$PRINTER_CFG"; then
             echo -e "${GREEN}✓ Already included: $1${NC}"
         else
-            # Insert after the first existing [include ...] line, or at line 1
             if grep -q '^\[include' "$PRINTER_CFG"; then
                 sed -i "/^\[include/a $line" "$PRINTER_CFG"
             else

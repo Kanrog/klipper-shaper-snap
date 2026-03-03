@@ -1,4 +1,4 @@
-# Klipper Resonance Calibration
+# Klipper Shaper Snap
 
 One-click resonance calibration macros for Klipper. Runs the test and saves a PNG graph directly to your config folder, viewable from Mainsail/Fluidd.
 
@@ -12,7 +12,7 @@ One-click resonance calibration macros for Klipper. Runs the test and saves a PN
 SSH into your printer and run:
 
 ```bash
-cd ~ && git clone https://github.com/YOURUSERNAME/klipper-resonance-calibration.git && bash ~/klipper-resonance-calibration/install.sh
+cd ~ && git clone https://github.com/Kanrog/klipper-shaper-snap.git && bash ~/klipper-shaper-snap/install.sh
 ```
 
 Then restart Klipper:
@@ -34,13 +34,13 @@ Graphs are saved to `printer_data/config/resonance_graphs/` and visible in the M
 ## Update
 
 ```bash
-cd ~/klipper-resonance-calibration && git pull && bash install.sh
+cd ~/klipper-shaper-snap && git pull && bash install.sh
 ```
 
 ## Uninstall
 
 ```bash
-bash ~/klipper-resonance-calibration/uninstall.sh
+bash ~/klipper-shaper-snap/uninstall.sh
 ```
 
 ## Note

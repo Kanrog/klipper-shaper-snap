@@ -1,5 +1,6 @@
 #!/bin/bash
-# Klipper Resonance Calibration - Uninstaller
+# Klipper Shaper Snap - Uninstaller
+# https://github.com/Kanrog/klipper-shaper-snap
 
 set -e
 
@@ -9,7 +10,7 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 echo -e "${RED}================================================${NC}"
-echo -e "${RED}  Klipper Resonance Calibration Uninstaller${NC}"
+echo -e "${RED}  Klipper Shaper Snap - Uninstaller${NC}"
 echo -e "${RED}================================================${NC}"
 echo ""
 
