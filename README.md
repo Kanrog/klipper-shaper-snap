@@ -28,6 +28,20 @@ CALIBRATE_RESONANCE_X       # Calibrate X axis
 CALIBRATE_RESONANCE_Y       # Calibrate Y axis
 CALIBRATE_RESONANCE_BOTH    # Calibrate both axes
 ```
+If you want a macro-button for easier use, you can paste these into your config:
+```
+[gcode_macro SHAPE_X]
+gcode:
+  CALIBRATE_RESONANCE_X
+  
+[gcode_macro SHAPE_Y]
+gcode:
+  CALIBRATE_RESONANCE_Y
+
+[gcode_macro SHAPE_BOTH]
+gcode:
+  CALIBRATE_RESONANCE_BOTH
+```
 
 Graphs are saved to `printer_data/config/resonance_graphs/` and visible in the Mainsail/Fluidd file browser.
 
